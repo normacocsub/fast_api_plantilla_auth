@@ -4,6 +4,7 @@ from typing import Optional
 from dotenv import load_dotenv
 import os
 import bcrypt
+from fastapi.security import HTTPAuthorizationCredentials
 
 load_dotenv()
 
@@ -24,9 +25,9 @@ def create_access_token(data: dict, expires_delta: Optional[timedelta] = None):
     return encoded_jwt
 
 
-def verify_token(token: str):
+def verify_token(token: HTTPAuthorizationCredentials):
     try:
-        payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
+        payload = jwt.decode(token.credentials, SECRET_KEY, algorithms=[ALGORITHM])
         return payload
     except:
         return False
@@ -41,7 +42,7 @@ def encrypt_password(password):
     hash_password = bcrypt.hashpw(password_bytes, salt)
 
     # Devolver el hash como un objeto de bytes
-    return hash_password
+    return hash_password.decode('utf-8')
 
 
 def equals_password(password, hash_password):
@@ -49,4 +50,5 @@ def equals_password(password, hash_password):
     password_bytes = password.encode('utf-8')
     hash_password_bytes = hash_password.encode('utf-8')
     # Comparar las contraseñas utilizando Bcrypt
-    return bcrypt.checkpw(password_bytes, hash_password_bytes)
+    u = bcrypt.checkpw(password_bytes, hash_password_bytes)
+    return u

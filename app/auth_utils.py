@@ -17,10 +17,11 @@ def has_permission(roles: List[str], allowed_roles: List[str]) -> bool:
 
 
 # Decorador para proteger rutas por roles
-oauth2_scheme = OAuth2PasswordBearer(tokenUrl="token")
+oauth2_scheme = HTTPBearer(scheme_name="Bearer")
+
 
 def auth_required(roles=None):
-    async def wrapper(token: str = Depends(oauth2_scheme)):
+    async def wrapper(token: HTTPAuthorizationCredentials = Depends(oauth2_scheme)):
         try:
             payload = verify_token(token)
 

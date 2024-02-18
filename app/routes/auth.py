@@ -17,7 +17,7 @@ async def login(auth: Auth, db: Session = Depends(get_db)):
         if user is None:
             return JSONResponse(content={"message": "User not found"},
                                 status_code=status.HTTP_404_NOT_FOUND)
-        validation_password = True
+        validation_password = equals_password(password=auth.password, hash_password=user.hashed_password)
         if validation_password is False:
             return JSONResponse(content={"message": "Credenciales inválidas"},
                                 status_code=status.HTTP_401_UNAUTHORIZED)
