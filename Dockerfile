@@ -1,4 +1,4 @@
-# Utilizamos una imagen de Python 3.9 como base
+# Utilizamos una imagen de Python 3.11 como base
 FROM python:3.11
 
 # Instalar dependencias de sistema

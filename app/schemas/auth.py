@@ -1,7 +1,7 @@
 from typing import Optional
-from pydantic import BaseModel
+from pydantic import BaseModel, EmailStr
 
 
 class Auth(BaseModel):
-    email: str
+    email: EmailStr
     password: str
